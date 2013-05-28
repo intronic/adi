@@ -179,15 +179,15 @@ Okay... our data is defined... and...
              '[:find ?x :where
                [?x :student/classes ?c]
                [?c :class/type :sports]])
- (map #(-> % :student :name))) ;=> ("Ivan" "Anna" "Jack")
+ (map #(-> % :student :name))) ;=> ("Ivan" "Jack")
 
 (->> ;; The same query with the keyword syntax 
  (adi/select class-datastore {:student/classes/type :sports})
- (map #(-> % :student :name))) ;=> ("Ivan" "Anna" "Jack")
+ (map #(-> % :student :name))) ;=> ("Ivan" "Jack")
 
 (->> ;; The same query with the object syntax
   (adi/select class-datastore {:student {:classes {:type :sports}}})
-  (map #(-> % :student :name))) ;=> ("Ivan" "Anna" "Jack")
+  (map #(-> % :student :name))) ;=> ("Ivan" "Jack")
 
 ;; The following are equivalent:
 (= (adi/select class-datastore {:student/classes {:type :sports}})
@@ -210,7 +210,7 @@ Okay... our data is defined... and...
 (->> ;; Find all the students that have class with teachers with fish
  (adi/select class-datastore {:student/classes/teacher/pets :fish })
  (map #(-> % :student :name)) sort)
-;=> ("Anna" "Charlie" "David" "Francis" "Harry" "Ivan" "Jack" "Kelly")
+;=> ("Anna" "Charlie" "David" "Erin" "Francis" "Harry" "Ivan" "Jack" "Kelly")
 
 (->> ;; Not that you'd ever want to write a query like this but you can!
      ;;
@@ -447,11 +447,11 @@ Once a scheme map has been defined, now data can be added:
 At a more primitive level, `insert!` relys on `emit-datoms` to generate data. There are different flags set for generating data for insertion as opposed to updating.
 
 ```clojure
-(use '[adi.emit.datoms :only [emit-datoms-insert]]
+(use '[adi.emit.datoms :only [emit-datoms-insert]])
 (use '[adi.emit.process :only [process-init-env]])
 
 (emit-datoms-insert data-account
-  (process-init-env class-schema)
+  (process-init-env class-schema))
 
 ;;=> ({:db/id {:part :db.part/user, :idx -1000105},
 ;;     :account/password "a123",
